@@ -70,6 +70,8 @@ signal load_requested
 signal sound_settings_requested
 ## Emitted when the dialog options of the running [PopochiuDialog] are shown.
 signal dialog_options_shown
+## Emitted when a game is loaded and the GUI has shown (or not shown) a notification to the player.
+signal load_feedback_finished
 
 ## Whether the GUI is blocked or not.
 var is_blocked := false
@@ -98,10 +100,10 @@ func show_system_text(msg: String) -> void:
 	
 	if E.cutscene_skipped:
 		await get_tree().process_frame
+		
 		return
 	
 	system_text_shown.emit(E.get_text(msg))
-	
 	await system_text_hidden
 	
 	if not E.playing_queue and gui.popups_stack.is_empty():

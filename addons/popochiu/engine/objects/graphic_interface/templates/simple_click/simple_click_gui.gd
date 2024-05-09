@@ -20,6 +20,23 @@ func _ready() -> void:
 #endregion
 
 #region Virtual ####################################################################################
+## Called when the GUI is blocked and not intended to handle input events.
+func _on_blocked(props := { blocking = true }) -> void:
+	Cursor.show_cursor("wait")
+	Cursor.is_blocked = true
+
+
+## Called when the GUI is unblocked and can handle input events again.
+func _on_unblocked() -> void:
+	Cursor.is_blocked = false
+	
+	if I.active:
+		Cursor.hide_main_cursor()
+		Cursor.show_secondary_cursor()
+	else:
+		Cursor.show_cursor(get_cursor_name())
+
+
 ## Called when a text is shown in the [SystemText] component. This erases the text in the
 ## [HoverText] component and shows the [code]"wait"[/code] cursor.
 func _on_system_text_shown(msg: String) -> void:
@@ -149,6 +166,20 @@ func _on_inventory_item_selected(item: PopochiuInventoryItem) -> void:
 	else:
 		Cursor.remove_secondary_cursor_texture()
 		Cursor.show_cursor()
+
+
+## Called when the game is saved. By default, it shows [code]Game saved[/code] in the SystemText
+## component.
+func _on_game_saved() -> void:
+	G.show_system_text("Game saved")
+
+
+## Called when a game is loaded. [param loaded_game] has the loaded data. By default, it shows
+## [code]Game loaded[/code] in the SystemText component.
+func _on_game_loaded(loaded_game: Dictionary) -> void:
+	await G.show_system_text("Game loaded")
+	
+	super(loaded_game)
 
 
 #endregion
