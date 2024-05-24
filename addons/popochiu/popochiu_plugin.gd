@@ -53,7 +53,7 @@ func _enter_tree() -> void:
 	prints(EN)
 	print_rich("[wave]%s[/wave]" % SYMBOL)
 	
-	# Chech if new migrations exist and run them if they do
+	# Check if new migrations exist and run them if they do
 	DoMigration.do_migrations()
 	
 	_editor_file_system.scan_sources()
